@@ -4,7 +4,6 @@ from .base_modules import Criterion
 
 class MSECriterion(Criterion):
     """
-    # Fixme: delete instructions after implementing
     The MSECriterion, which is basic L2 norm usually used for regression.
     """
     def __init__(self):

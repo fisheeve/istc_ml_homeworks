@@ -5,15 +5,10 @@ from .base_modules import Module
 
 class Linear(Module):
     """
-    # Fixme: delete instructions after implementing
     ### input:  batch_size x n_features1 ###
     ### output: batch_size x n_features2 ###
 
     A module which applies a linear transformation
-    A common name is fully-connected layer, dense layer, InnerProductLayer
-     in caffe(package).
-
-    The module should work with 2D input of shape (n_samples, n_feature).
     """
 
     def __init__(self, n_in, n_out):
@@ -59,10 +54,6 @@ class Linear(Module):
 
 class SoftMax(Module):
     """
-    # Fixme: delete instructions after implementing
-    This one is probably the hardest but as others only takes 5 lines of code
-     in total.
-
     ### input:  batch_size x n_feats ###
     ### output: batch_size x n_feats ###
     """

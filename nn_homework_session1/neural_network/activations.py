@@ -45,8 +45,7 @@ class Tanh(Module):
 
 class ReLU(Module):
     """
-    # Fixme: delete instructions after implementing
-    Implement Rectified Linear Unit non-linearity (aka ReLU)
+    Rectified Linear Unit non-linearity
     """
     def __init__(self):
         super(ReLU, self).__init__()
