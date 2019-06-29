@@ -70,11 +70,13 @@ class SoftMax(Module):
         super(SoftMax, self).__init__()
 
     def updateOutput(self, input):
-        raise NotImplemented()
+        exp = np.exp(input)
+        self.output = exp / np.sum(exp, axis=1, keepdims=True)
         return self.output
 
     def updateGradInput(self, inpt, gradOutput):
-        raise NotImplemented()
+        diff = np.sum(gradOutput * self.output, axis=1, keepdims=True)
+        self.gradInput = self.output * (gradOutput - diff)
         return self.gradInput
 
     def __repr__(self):

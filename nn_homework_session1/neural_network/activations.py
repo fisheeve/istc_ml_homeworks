@@ -1,4 +1,5 @@
 from .base_modules import Module
+import numpy as np
 
 
 class Sigmoid(Module):
@@ -51,11 +52,12 @@ class ReLU(Module):
         super(ReLU, self).__init__()
 
     def updateOutput(self, inpt):
-        raise NotImplemented()
+        self.output = np.maximum(inpt, np.zeros_like(inpt))
         return self.output
 
     def updateGradInput(self, inpt, gradOutput):
-        raise NotImplemented()
+        self.gradInput = gradOutput * np.maximum(
+            np.sign(inpt), np.zeros_like(inpt))
         return self.gradInput
 
     def __repr__(self):

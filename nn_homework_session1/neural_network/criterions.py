@@ -11,11 +11,12 @@ class MSECriterion(Criterion):
         super(MSECriterion, self).__init__()
 
     def updateOutput(self, input, target):
-        raise NotImplemented()
+        delta = input - target
+        self.output = np.sum(delta * delta) / target.shape[0]
         return self.output
 
     def updateGradInput(self, input, target):
-        raise NotImplemented()
+        self.gradInput = 2*(input - target)
         return self.gradInput
 
     def __repr__(self):

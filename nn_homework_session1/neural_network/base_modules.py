@@ -158,7 +158,10 @@ class Sequential(Module):
 
         Just write a little loop.
         """
-        raise NotImplemented()
+        out = inpt
+        for module in self.modules:
+            out = module.forward(out)
+        self.output = out
         return self.output
 
     def backward(self, inpt, gradOutput):
@@ -183,7 +186,13 @@ class Sequential(Module):
         !!!
 
         """
-        raise NotImplemented()
+
+        for i, module in reversed(list(enumerate(self.modules))):
+            if i==0:
+                gradOutput = module.backward(inpt, gradOutput)
+            else:
+                gradOutput = module.backward(self.modules[i-1].output, gradOutput)
+            self.gradInput = gradOutput
         return self.gradInput
 
     def zeroGradParameters(self):
