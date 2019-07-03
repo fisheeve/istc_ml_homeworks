@@ -4,18 +4,17 @@ import numpy as np
 
 class Sigmoid(Module):
     """
-    # Fixme: delete instructions after implementing
-    Implement well-known Sigmoid non-linearity
+    Sigmoid
     """
     def __init__(self):
         super(Sigmoid, self).__init__()
 
     def updateOutput(self, inpt):
-        raise NotImplemented()
+        self.output = 1 / (1 + np.exp(-inpt))
         return self.output
 
     def updateGradInput(self, inpt, gradOutput):
-        raise NotImplemented()
+        self.gradInput = gradOutput * (self.output * (1 - self.output))
         return self.gradInput
 
     def __repr__(self):
@@ -23,20 +22,16 @@ class Sigmoid(Module):
 
 
 class Tanh(Module):
-    """
-    # Fixme: delete instructions after implementing
-    Implement hyperbolic tangent non-linearity (aka Tanh): Note that Tanh is
-     scaled version of the sigmoid function.
-    """
     def __init__(self):
         super(Tanh, self).__init__()
 
     def updateOutput(self, inpt):
-        raise NotImplemented()
+        self.output = 1 - 2 / (np.exp(2 * inpt) + 1)
         return self.output
 
     def updateGradInput(self, inpt, gradOutput):
-        raise NotImplemented()
+        exp = np.exp(2 * inpt)
+        self.gradInput = 4 * exp / (exp + 1)**2
         return self.gradInput
 
     def __repr__(self):
