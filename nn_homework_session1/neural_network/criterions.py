@@ -3,9 +3,6 @@ from .base_modules import Criterion
 
 
 class MSECriterion(Criterion):
-    """
-    The MSECriterion, which is basic L2 norm usually used for regression.
-    """
     def __init__(self):
         super(MSECriterion, self).__init__()
 
@@ -23,29 +20,17 @@ class MSECriterion(Criterion):
 
 
 class CrossEntropyCriterion(Criterion):
-    """
-    # Fixme: delete instructions after implementing
-    You task is to implement the CrossEntropyCriterion. It should implement
-    multiclass log loss (http://ml-cheatsheet.readthedocs.io/en/latest/
-     loss_functions.html#cross-entropy).
-    Nevertheless there is a sum over y (target) in that formula,
-    remember that targets are one-hot encoded. This fact simplifies
-    the computations a lot. Note, that criterions are the only places,
-    where you divide by batch size.
-    """
     def __init__(self):
         super(CrossEntropyCriterion, self).__init__()
 
     def updateOutput(self, inpt, target):
-        # Use this trick to avoid numerical errors
         input_clamp = np.maximum(1e-15, np.minimum(inpt, 1 - 1e-15))
-        raise NotImplemented()
+        self.output = np.mean(-np.log(input_clamp) * target)
         return self.output
 
     def updateGradInput(self, inpt, target):
-        # Use this trick to avoid numerical errors
         input_clamp = np.maximum(1e-15, np.minimum(inpt, 1 - 1e-15))
-        raise NotImplemented()
+        self.gradInput  =  - target / input_clamp
         return self.gradInput
 
     def __repr__(self):

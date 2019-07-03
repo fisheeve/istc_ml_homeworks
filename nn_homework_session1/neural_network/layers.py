@@ -141,11 +141,15 @@ class Dropout(Module):
         self.mask = None
 
     def updateOutput(self, inpt):
-        raise NotImplemented()
+        if self.training :
+            self.mask = bernoulli.rvs(1-self.p, size=inpt.shape[-1])
+            self.output = self.mask * inpt
+        else :
+            self.output = inpt * (1 - self.p)
         return self.output
 
     def updateGradInput(self, inpt, gradOutput):
-        raise NotImplemented()
+        self.gradInput = gradOutput * self.mask
         return self.gradInput
 
     def __repr__(self):

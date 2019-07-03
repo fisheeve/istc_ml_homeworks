@@ -24,8 +24,7 @@ class Module(object):
        """
         self.output = None
         self.gradInput = None
-        self.train = True
-        self.training = None
+        self.training = True
 
     def forward(self, input):
         """

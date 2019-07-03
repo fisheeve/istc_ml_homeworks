@@ -31,7 +31,7 @@ class Tanh(Module):
 
     def updateGradInput(self, inpt, gradOutput):
         exp = np.exp(2 * inpt)
-        self.gradInput = 4 * exp / (exp + 1)**2
+        self.gradInput = gradOutput * 4 * exp / (exp + 1)**2
         return self.gradInput
 
     def __repr__(self):
@@ -59,21 +59,18 @@ class ReLU(Module):
 
 
 class LeakyReLU(Module):
-    """
-    # Fixme: delete instructions after implementing
-    Implement Leaky Rectified Linear Unit. Experiment with slope.
-    http://en.wikipedia.org/wiki%2FRectifier_%28neural_networks%29%23Leaky_ReLUs
-    """
     def __init__(self, slope=0.03):
+        assert 0 < slope < 1
         super(LeakyReLU, self).__init__()
         self.slope = slope
 
     def updateOutput(self, inpt):
-        raise NotImplemented()
+        self.output = np.maximum(inpt, self.slope * inpt)
         return self.output
 
     def updateGradInput(self, inpt, gradOutput):
-        raise NotImplemented()
+        self.gradInput = gradOutput * np.maximum(
+            np.sign(inpt), self.slope * np.ones_like(inpt))
         return self.gradInput
 
     def __repr__(self):
@@ -81,22 +78,19 @@ class LeakyReLU(Module):
 
 
 class ELU(Module):
-    """
-    # Fixme: delete instructions after implementing
-    Implement Exponential Linear Units activations.
-    http://arxiv.org/abs/1511.07289
-    """
     def __init__(self, alpha=1.0):
         super(ELU, self).__init__()
 
         self.alpha = alpha
 
     def updateOutput(self, inpt):
-        raise NotImplemented()
+        self.output = inpt * (inpt > 0) + self.alpha * (
+                inpt <= 0) * (np.exp(inpt) -1)
         return self.output
 
     def updateGradInput(self, inpt, gradOutput):
-        raise NotImplemented()
+        self.gradInput = gradOutput * (
+                (inpt > 0) + (self.alpha + self.output) * (inpt <= 0))
         return self.gradInput
 
     def __repr__(self):
@@ -104,21 +98,16 @@ class ELU(Module):
 
 
 class SoftPlus(Module):
-    """
-    # Fixme: delete instructions after implementing
-    Implement SoftPlus activations. Look, how they look a lot like ReLU.
-    https://en.wikipedia.org/wiki%2FRectifier_%28neural_networks%29
-    """
-    def __init__(self):
+     def __init__(self):
         super(SoftPlus, self).__init__()
 
-    def updateOutput(self, inpt):
-        raise NotImplemented()
+     def updateOutput(self, inpt):
+        self.output = np.log(1 + np.exp(inpt))
         return self.output
 
-    def updateGradInput(self, inpt, gradOutput):
-        raise NotImplemented()
+     def updateGradInput(self, inpt, gradOutput):
+        self.gradInput = gradOutput / (1 + np.exp(-inpt))
         return self.gradInput
 
-    def __repr__(self):
+     def __repr__(self):
         return "SoftPlus"
