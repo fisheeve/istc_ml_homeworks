@@ -50,8 +50,7 @@ class ReLU(Module):
         return self.output
 
     def updateGradInput(self, inpt, gradOutput):
-        self.gradInput = gradOutput * np.maximum(
-            np.sign(inpt), np.zeros_like(inpt))
+        self.gradInput = gradOutput * (inpt>0)
         return self.gradInput
 
     def __repr__(self):

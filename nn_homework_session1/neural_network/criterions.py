@@ -47,17 +47,16 @@ class MultiLabelCriterion(Criterion):
         super(MultiLabelCriterion, self).__init__()
 
     def updateOutput(self, inpt, target):
-        # Use this trick to avoid numerical errors
         input_clamp = np.maximum(1e-15, np.minimum(inpt, 1 - 1e-15))
-
-        raise NotImplemented()
+        sigm = 1 / (1 + np.exp(-input_clamp))
+        self.output = np.mean(np.sum(-target * np.log(sigm) -
+                             (1 - target) * log(1-sigm), axis=1))
         return self.output
 
     def updateGradInput(self, inpt, target):
-        # Use this trick to avoid numerical errors
         input_clamp = np.maximum(1e-15, np.minimum(inpt, 1 - 1e-15))
-
-        raise NotImplemented()
+        sigm = 1 / (1 + np.exp(-input_clamp))
+        self.gradInput = -target * (1 - sigm) + (1 - target) * sigm
         return self.gradInput
 
     def __repr__(self):
