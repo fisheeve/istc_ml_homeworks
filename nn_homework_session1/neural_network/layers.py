@@ -76,39 +76,31 @@ class SoftMax(Module):
 
 class BatchMeanSubtraction(Module):
     """
-    # Fixme: delete instructions after implementing
-    One of the most significant recent ideas that impacted NNs a lot is Batch
-    normalization (https://arxiv.org/abs/1502.03167). The idea is simple,
-    yet effective: the features should be whitened ( 𝑚𝑒𝑎𝑛=0 , 𝑠𝑡𝑑=1 ) all the
-    way through NN. This improves the convergence for deep models letting it
-    train them for days but not weeks. You are to implement a part of the
-    layer: mean subtraction. That is, the module should calculate mean value for
-    every feature (every column) and subtract it.
-
-    Note, that you need to estimate the mean over the dataset to be able to
-    predict on test examples. The right way is to create a variable which will
-    hold smoothed mean over batches (exponential smoothing works good) and use
-     it when forwarding test examples.
-
-    When training calculate mean as following:
-        mean_to_subtract = self.old_mean * alpha + batch_mean * (1 - alpha)
-    when evaluating (self.training == False) set  𝑎𝑙𝑝ℎ𝑎=1 .
-
     ### input:  batch_size x n_feats ###
     ### output: batch_size x n_feats ###
     """
     def __init__(self, alpha=0.95):
         super(BatchMeanSubtraction, self).__init__()
 
-        self.alpha = alpha
+        if self.training:
+            self.alpha = alpha
+        else:
+            self.alpha = 1
+
         self.old_mean = None
 
     def updateOutput(self, inpt):
-        raise NotImplemented()
+        batch_mean = np.mean(inpt, axis=0)
+        if self.old_mean is None:
+            self.old_mean = batch_mean
+        mean_to_subtract = (
+                self.alpha * self.old_mean + (1 - self.alpha) * batch_mean)
+        self.output = inpt - mean_to_subtract
+        self.old_mean = mean_to_subtract
         return self.output
 
     def updateGradInput(self, inpt, gradOutput):
-        raise NotImplemented()
+        self.gradInput = gradOutput
         return self.gradInput
 
     def __repr__(self):
@@ -117,21 +109,6 @@ class BatchMeanSubtraction(Module):
 
 class Dropout(Module):
     """
-    # Fixme: delete instructions after implementing
-    Implement dropout (https://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf)
-    The idea and implementation is really simple: just multiply the input by
-      𝐵𝑒𝑟𝑛𝑜𝑢𝑙𝑙𝑖(𝑝) mask.
-
-    This is a very cool regularizer. In fact, when you see your net is
-    overfitting try to add more dropout. It is hard to test, since every forward
-    requires sampling a new mask, that is the only reason we need fix_mask
-    parameter in there.
-
-    While training (self.training == True) it should sample a mask on each
-     iteration (for every batch).
-    When testing this module should implement identity transform
-     i.e. self.output = input * p.
-
     ### input:  batch_size x n_feats ###
     ### output: batch_size x n_feats ###
     """
@@ -141,7 +118,7 @@ class Dropout(Module):
         self.mask = None
 
     def updateOutput(self, inpt):
-        if self.training :
+        if self.training:
             self.mask = bernoulli.rvs(1-self.p, size=inpt.shape[-1])
             self.output = self.mask * inpt
         else :

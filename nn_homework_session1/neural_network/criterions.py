@@ -39,11 +39,6 @@ class CrossEntropyCriterion(Criterion):
 
 class MultiLabelCriterion(Criterion):
     def __init__(self):
-        """
-        # Fixme: delete instructions after implementing
-        MultiLabelCriterion for attribute classification, i.e. target is
-         multiple-hot encoded, could be multiple ones.
-        """
         super(MultiLabelCriterion, self).__init__()
 
     def updateOutput(self, inpt, target):

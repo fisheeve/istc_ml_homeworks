@@ -1,27 +1,5 @@
 class Module(object):
-    """
-    Module is an abstract class which defines fundamental methods necessary for
-    a training a neural network.
-    You do not need to change anything here, just read the comments.
-    """
-
     def __init__(self):
-        """
-        # Fixme: delete instructions after implementing
-       Basically, you can think of a module as of a something (black box)
-       which can process `input` data and produce `ouput` data.
-       This is like applying a function which is called `forward`:
-
-           output = module.forward(input)
-
-       The module should be able to perform a backward pass:
-        to differentiate the `forward` function.
-       More, it should be able to differentiate it if is a part of chain
-        (chain rule).
-       The latter implies there is a gradient from previous step of a chain rule
-
-           gradInput = module.backward(input, gradOutput)
-       """
         self.output = None
         self.gradInput = None
         self.training = True
@@ -53,33 +31,25 @@ class Module(object):
         Computes the output using the current parameter set of the class and input.
         This function returns the result which is stored in the `output` field.
 
-        Make sure to both store the data in `output` field and return it.
         """
 
-        # The easiest case:
-        # self.output = input
-        # return self.output
         pass
 
     def updateGradInput(self, inpt, gradOutput):
         """
         Computing the gradient of the module with respect to its own input.
-        This is returned in `gradInput`. Also, the `gradInput` state variable is updated accordingly.
+        This is returned in `gradInput`. Also, the `gradInput` state variable is
+        updated accordingly.
 
         The shape of `gradInput` is always the same as the shape of `input`.
 
-        Make sure to both store the gradients in `gradInput` field and return it.
         """
 
-        # The easiest case:
-        # self.gradInput = gradOutput
-        # return self.gradInput
         pass
 
     def accGradParameters(self, inpt, gradOutput):
         """
         Computing the gradient of the module with respect to its own parameters.
-        No need to override if module has no parameters (e.g. ReLU).
         """
         pass
 
@@ -119,18 +89,13 @@ class Module(object):
 
     def __repr__(self):
         """
-        Pretty printing. Should be overrided in every module if you want
-        to have readable description.
+        Pretty printing.
         """
         return "Module"
 
 
 class Sequential(Module):
     """
-    # Fixme: delete instructions after implementing
-    Define a forward and backward pass procedures.
-    This class implements a container, which processes `input` data sequentially
-
      `input` is processed by each module (layer) in self.modules consecutively
     The resulting array is called `output`
     """
@@ -189,10 +154,7 @@ class Sequential(Module):
 
 
 class Criterion(object):
-    """
-    # Fixme: delete instructions after implementing
-    Criterion ais used to score the models answers.
-    """
+
     def __init__(self):
         self.output = None
         self.gradInput = None
@@ -201,9 +163,6 @@ class Criterion(object):
         """
         Given an input and a target, compute the loss function
         associated to the criterion and return the result.
-
-        For consistency this function should not be overrided,
-        all the code goes in `updateOutput`.
         """
         return self.updateOutput(inpt, target)
 
@@ -211,27 +170,17 @@ class Criterion(object):
         """
         Given an input and a target, compute the gradients of the loss function
         associated to the criterion and return the result.
-
-        For consistency this function should not be overrided,
-        all the code goes in `updateGradInput`.
         """
         return self.updateGradInput(input, target)
 
     def updateOutput(self, input, target):
-        """
-        Function to override.
-        """
         return self.output
 
     def updateGradInput(self, input, target):
-        """
-        Function to override.
-        """
         return self.gradInput
 
     def __repr__(self):
         """
-        Pretty printing. Should be overrided in every module if you want
-        to have readable description.
+        Pretty printing.
         """
         return "Criterion"
