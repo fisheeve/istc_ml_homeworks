@@ -73,7 +73,7 @@ class Module(object):
         """
         return []
 
-    def training(self):
+    def training_mode(self):
         """
         Sets training mode for the module.
         Training and testing behaviour differs for Dropout, BatchNorm.
